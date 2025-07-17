@@ -1,6 +1,6 @@
 # EdTech Assignment Tracker - System Design Document
 
-## Part A: System Design (Written)
+
 
 ### 1. System Architecture
 
