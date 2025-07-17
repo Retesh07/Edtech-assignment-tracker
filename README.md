@@ -264,4 +264,5 @@ Level 4: Browser caching with proper headers
 
 This system design provides a solid foundation for an educational assignment tracking platform with clear paths for scaling and enhancement as requirements grow.
 #   E d t e c h - a s s i g n m e n t - t r a c k e r  
+ #   E d t e c h - a s s i g n m e n t - t r a c k e r  
  
