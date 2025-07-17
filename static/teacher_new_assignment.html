@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Post New Assignment</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Create Assignment</h1>
+    <!-- A tiny project note: This page is kept purposely minimal – easy to tweak by hand. -->
+    <label>JWT Token (temporary until we add cookies)
+      <input id="token" placeholder="paste teacher token here">
+    </label>
+
+    <label>Title
+      <input id="title" placeholder="e.g. Algebra Worksheet 3">
+    </label>
+    <label>Description
+      <textarea id="description" rows="4"></textarea>
+    </label>
+    <label>Due date (optional)
+      <input id="due" type="datetime-local">
+    </label>
+
+    <button id="createBtn">Create</button>
+    <p id="msg"></p>
+  </div>
+
+<script>
+  document.getElementById('createBtn').addEventListener('click', async () => {
+    const token = document.getElementById('token').value.trim();
+    if(!token){ alert('Need a token'); return; }
+    const body = {
+      title: document.getElementById('title').value,
+      description: document.getElementById('description').value,
+      due_date: document.getElementById('due').value || null
+    };
+    const resp = await fetch('/assignments', {
+      method:'POST', headers:{'Content-Type':'application/json','Authorization':`Bearer ${token}`},
+      body: JSON.stringify(body)
+    });
+    const data = await resp.json();
+    document.getElementById('msg').textContent = resp.ok ? '✅ Created! ID '+data.id : '❌ '+data.detail;
+  });
+</script>
+</body></html>

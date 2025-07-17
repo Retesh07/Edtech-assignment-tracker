@@ -1,0 +1,20 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>View Submissions</title><link rel="stylesheet" href="/static/style.css"></head>
+<body><div class="container"><h1>Submissions</h1>
+<label>JWT Token <input id="token" placeholder="teacher token"></label>
+<label>Assignment ID <input id="aid" type="number"></label>
+<button id="loadBtn">Load</button>
+<table id="tbl" style="width:100%;margin-top:1rem;border-collapse:collapse"></table>
+<p id="msg"></p></div>
+<script>
+function row(...cells){return `<tr>`+cells.map(c=>`<td style='border:1px solid #ccc;padding:4px'>${c}</td>`).join('')+`</tr>`}
+document.getElementById('loadBtn').addEventListener('click', async ()=>{
+  const t=document.getElementById('token').value.trim();
+  const aid=document.getElementById('aid').value;
+  const resp=await fetch(`/assignments/${aid}/submissions`,{headers:{'Authorization':`Bearer ${t}`}});
+  const data=await resp.json();
+  const tbl=document.getElementById('tbl');
+  if(!resp.ok){document.getElementById('msg').textContent='❌ '+data.detail;return;}
+  tbl.innerHTML=row('ID','Student','Answer','File','Submitted at')+data.map(s=>row(s.id,s.student.name,s.text_answer||'',s.file_url?`<a href='/${s.file_url}'>file</a>`:'',new Date(s.submitted_at).toLocaleString())).join('');
+});
+</script></body></html>

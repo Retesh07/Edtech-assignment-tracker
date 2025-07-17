@@ -1,0 +1,21 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Submit Assignment</title><link rel="stylesheet" href="/static/style.css"></head>
+<body><div class="container"><h1>Submit Assignment</h1>
+<label>JWT Token <input id="token" placeholder="student token"></label>
+<label>Assignment ID <input id="aid" type="number"></label>
+<label>Answer <textarea id="answer"></textarea></label>
+<label>File (optional) <input id="file" type="file"></label>
+<button id="submitBtn">Submit</button><p id="msg"></p></div>
+<script>
+document.getElementById('submitBtn').addEventListener('click', async ()=>{
+  const t=document.getElementById('token').value.trim();
+  const aid=document.getElementById('aid').value;
+  const form=new FormData();
+  form.append('text_answer', document.getElementById('answer').value);
+  const f=document.getElementById('file').files[0];
+  if(f) form.append('file', f);
+  const resp=await fetch(`/assignments/${aid}/submissions`,{method:'POST',headers:{'Authorization':`Bearer ${t}`},body:form});
+  const data=await resp.json();
+  document.getElementById('msg').textContent = resp.ok ? '✅ Submitted!' : '❌ '+data.detail;
+});
+</script></body></html>
